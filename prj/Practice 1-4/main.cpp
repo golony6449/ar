@@ -9,9 +9,10 @@ const string dataPath = "../data/out/";
 void main()
 {
 	VideoCapture capture(1);
+	VideoCapture capture2;
 	QRCodeDetector detector;
 
-	Mat frame, points, qrcode;
+	Mat frame, frame2, points, qrcode;
 	string data;
 	int num = 1;
 
@@ -26,6 +27,13 @@ void main()
 		if (data.length() > 0) {
 			cout << data << endl;
 
+			// 동영상 합성
+			if (!capture2.isOpened()) capture2.open(dataPath + data);	// 파일명
+			
+			capture2 >> frame2;
+			imshow("frame2", frame2);	// 성능상 putText, line 뒤에서 수행하는 것이 좋음
+
+			// QR 코드 마킹
 			putText(frame, data, Point((int)points.at<float>(0, 0), (int)points.at<float>(0, 1)), 
 				FONT_HERSHEY_PLAIN, 20, Scalar(255, 0, 0));
 
